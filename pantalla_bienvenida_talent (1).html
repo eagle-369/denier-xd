@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pantalla de Bienvenida</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      padding: 40px;
+      text-align: center;
+      color: #333;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 0 auto;
+      max-width: 600px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #006699;
+      margin-bottom: 20px;
+    }
+    .section {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    .bold {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Música de fondo -->
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/22/audio_5b5a32b0a6.mp3" type="audio/mpeg">
+    Tu navegador no soporta el audio.
+  </audio>
+
+  <div class="card">
+    <h1>🎉 ¡Bienvenido al curso!</h1>
+
+    <div class="section" id="hora">🕒 Hora actual: cargando...</div>
+
+    <div class="section" id="clima">🌤️ Clima: cargando...</div>
+
+    <div class="section" id="setup">🃏 Chiste: cargando...</div>
+    <div class="section bold" id="punchline"></div>
+  </div>
+
+  <script>
+    // Hora actual
+    function actualizarHora() {
+      const ahora = new Date();
+      document.getElementById("hora").innerText = "🕒 Hora actual: " + ahora.toLocaleTimeString();
+    }
+    setInterval(actualizarHora, 1000);
+    actualizarHora();
+
+    // Chiste aleatorio
+    fetch("https://official-joke-api.appspot.com/random_joke")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("setup").innerText = "🃏 " + data.setup;
+        document.getElementById("punchline").innerText = data.punchline;
+      })
+      .catch(() => {
+        document.getElementById("setup").innerText = "No se pudo cargar un chiste.";
+      });
+
+    // Clima simulado (puedo conectar a OpenWeather si querés con API key)
+    const estados = ["Soleado", "Nublado", "Lluvia ligera", "Parcialmente nublado"];
+    const temp = (Math.random() * 10 + 18).toFixed(1); // entre 18 y 28 °C
+    const estado = estados[Math.floor(Math.random() * estados.length)];
+    document.getElementById("clima").innerText = `🌤️ Clima: ${temp} °C - ${estado}`;
+  </script>
+
+</body>
+</html>
